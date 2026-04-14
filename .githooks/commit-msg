@@ -1,0 +1,53 @@
+#!/bin/sh
+# commit-msg hook: validates conventional commits
+# Pattern: ^(Notes added by 'git notes add')|(Revert "Merge branch '\S+' into '\S+'")|(chore|docs|feat|fix|perf|refactor|imp|style|infra|test|breaking)(\(.*\))?!?: .*($|\n.*)
+#
+# Types:
+#   feat     - New feature
+#   fix      - Bug fix
+#   docs     - Documentation only
+#   style    - Formatting, no code change
+#   refactor - Code change that neither fixes nor adds feature
+#   perf     - Performance improvement
+#   test     - Adding or correcting tests
+#   build    - Build system, CI, dependencies
+#   ci       - CI configuration
+#   chore    - Maintenance tasks
+#   imp      - Improvement to existing feature
+#   infra    - Infrastructure changes
+#   breaking - Breaking change (can combine with other types)
+
+COMMIT_MSG_FILE="$1"
+COMMIT_MSG=$(cat "$COMMIT_MSG_FILE")
+
+# Skip if empty (shouldn't happen, but be safe)
+if [ -z "$COMMIT_MSG" ]; then
+    exit 0
+fi
+
+# Conventional commits pattern
+PATTERN="^(Notes added by 'git notes add')|(Revert \"Merge branch '\\S+' into '\\S+'\")|(chore|docs|feat|fix|perf|refactor|imp|style|infra|test|build|ci|breaking)(\\([^)]*\\))?!?: .*($|\\n.*)"
+
+if ! echo "$COMMIT_MSG" | grep -Eq "$PATTERN"; then
+    echo ""
+    echo "ERROR: Commit message does not follow the conventional commits pattern."
+    echo ""
+    echo "Required format:"
+    echo "  <type>(<scope>)?(!)?: <description>"
+    echo ""
+    echo "Valid types:"
+    echo "  feat, fix, docs, style, refactor, perf, test, build, ci, chore, imp, infra, breaking"
+    echo ""
+    echo "Examples:"
+    echo "  feat: add user authentication"
+    echo "  fix(auth): resolve token expiry edge case"
+    echo "  docs: update README"
+    echo "  feat!: breaking change in API"
+    echo "  fix(core)!: remove deprecated method"
+    echo ""
+    echo "Or use 'Revert \"Merge branch ...\"' for merge reversions."
+    echo ""
+    exit 1
+fi
+
+exit 0

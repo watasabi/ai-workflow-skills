@@ -1,0 +1,43 @@
+[package]
+name = "ai-workflow-skills"
+version = "0.3.0"
+edition = "2021"
+rust-version = "1.88"
+description = "CLI to install and manage AI agent skills from a versioned local or Git catalog (agent-skills model)"
+license = "MIT OR Apache-2.0"
+readme = "README.md"
+repository = "https://github.com/watasabi/ai-workflow-skills"
+homepage = "https://github.com/watasabi/ai-workflow-skills"
+
+[[bin]]
+name = "ai-workflow-skills"
+path = "src/main.rs"
+
+[lib]
+name = "ai_workflow_skills"
+path = "src/lib.rs"
+
+[dependencies]
+anyhow = "1"
+dunce = "1"
+chrono = { version = "0.4", default-features = false, features = ["clock", "std"] }
+clap = { version = "4", features = ["derive", "env"] }
+dirs = "5"
+once_cell = "1"
+pathdiff = "0.2"
+regex = "1"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+serde_yaml = "0.9"
+semver = "1"
+sha2 = "0.10"
+walkdir = "2"
+crossterm = "0.28"
+ratatui = "0.29"
+libc = "0.2"
+
+[dev-dependencies]
+assert_cmd = "2"
+predicates = "3"
+serde_json = "1"
+tempfile = "3"

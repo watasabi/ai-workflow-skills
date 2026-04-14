@@ -1,0 +1,36 @@
+#!/bin/sh
+# pre-commit: same checks as GitHub Actions (.github/workflows/ci.yml)
+# Activate hooks: git config core.hooksPath .githooks
+#
+# Skip all checks (e.g. WIP commit): AI_WORKFLOW_SKILLS_HOOK_SKIP=1 git commit ...
+
+set -e
+
+ROOT="$(git rev-parse --show-toplevel)"
+cd "$ROOT" || exit 1
+
+if [ -n "${AI_WORKFLOW_SKILLS_HOOK_SKIP:-}" ]; then
+	echo "githooks(pre-commit): skipping (AI_WORKFLOW_SKILLS_HOOK_SKIP is set)" >&2
+	exit 0
+fi
+
+STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM)
+if [ -z "$STAGED_FILES" ]; then
+	exit 0
+fi
+
+if ! echo "$STAGED_FILES" | grep -qE '\.(rs|toml)$|Cargo\.lock'; then
+	exit 0
+fi
+
+echo "githooks(pre-commit): cargo fetch --locked" >&2
+cargo fetch --locked
+
+echo "githooks(pre-commit): cargo fmt --check" >&2
+cargo fmt --check
+
+echo "githooks(pre-commit): cargo clippy --all-targets --all-features -- -D warnings" >&2
+cargo clippy --all-targets --all-features -- -D warnings
+
+echo "githooks(pre-commit): cargo test --all-features" >&2
+cargo test --all-features
