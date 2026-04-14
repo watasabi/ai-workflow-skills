@@ -2,8 +2,8 @@
 
 mod common;
 
-use assert_cmd::Command;
 use ai_workflow_skills::core::lockfile;
+use assert_cmd::Command;
 use predicates::prelude::*;
 use std::fs;
 use tempfile::tempdir;
