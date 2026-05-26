@@ -8,54 +8,109 @@ Skills are installed for **Cursor** under `.cursor/skills/` by default. Other ag
 
 ## Install
 
-### Option A: Install script (recommended)
+This repository is **private**. You cannot pipe `install.sh` from `raw.githubusercontent.com` without authentication (that URL returns 404 for private repos). **Clone the repo first**, then install from the checkout.
 
-The script downloads a **Linux x86_64** release tarball from GitHub Releases, or on **macOS** clones the repo and runs `cargo build --release` (Rust required). It does **not** download a prebuilt binary for **Linux on ARM** (e.g. `aarch64`); on those machines use [Option B: Cargo](#option-b-cargo-from-this-repository) or [Option C: Build from source](#option-c-build-from-source) so the tool is compiled for your CPU.
-
-**Requirements:** `curl` and `python3` (to resolve the latest release). On macOS you also need `git` and `cargo`.
+Set your org/repo once (default in `install.sh` is `watasabi/ai-workflow-skills`):
 
 ```bash
-export GITHUB_REPOSITORY="watasabi/ai-workflow-skills"   # use your fork if needed
-export GITHUB_TOKEN="<your-token>"                     # optional: private repo or API rate limits
-curl -fsSL "https://raw.githubusercontent.com/watasabi/ai-workflow-skills/main/install.sh" | bash -s --
+export GITHUB_REPOSITORY="YOUR_ORG/ai-workflow-skills"
+```
+
+### Authentication (private GitHub)
+
+| Method | Use for |
+|--------|---------|
+| **SSH** (`git@github.com:ORG/ai-workflow-skills.git`) | `git clone`, `cargo install --git git@github.com:…` — recommended if you already use SSH keys |
+| **HTTPS + token** | `install.sh` (`-t` / `GITHUB_TOKEN`), release downloads, `cargo install --git https://…` |
+
+For HTTPS, use a [fine-grained](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens) or classic PAT with at least **Contents: Read** on this repository. Export it (do not commit it):
+
+```bash
+export GITHUB_TOKEN="ghp_…"   # or GH_TOKEN; also used by install.sh
+```
+
+`install.sh` and the CLI use the token only locally (API, release assets, optional `git clone` on macOS). For **remote skill catalogs** over HTTPS, see [`AI_WORKFLOW_SKILLS_GIT_TOKEN`](#configure-the-catalog) below.
+
+### Option A: Clone + Cargo (recommended)
+
+Works on every platform (Linux x86_64, ARM64, macOS) and does not depend on GitHub Releases.
+
+```bash
+# SSH (recommended)
+git clone git@github.com:YOUR_ORG/ai-workflow-skills.git
+cd ai-workflow-skills
+
+# Or HTTPS with a PAT embedded once for clone (prefer SSH or gh auth instead)
+# git clone https://github.com/YOUR_ORG/ai-workflow-skills.git
+
+cargo install --path . --locked
+ai-workflow-skills --version
+```
+
+Binary: `~/.cargo/bin/ai-workflow-skills` (ensure `~/.cargo/bin` is on your `PATH`).
+
+**Install from Git without a full clone** (HTTPS private repo):
+
+```bash
+export GITHUB_TOKEN="ghp_…"
+cargo install --git "https://github.com/${GITHUB_REPOSITORY}.git" --locked
+```
+
+Or with SSH:
+
+```bash
+cargo install --git "git@github.com:YOUR_ORG/ai-workflow-skills.git" --locked
+```
+
+### Option B: Clone + install script
+
+Run [`install.sh`](install.sh) from a local checkout. On **Linux x86_64** it downloads a release tarball; on **macOS** it clones the tagged repo and runs `cargo build --release`. Both paths need a token for a **private** repo when resolving releases or cloning.
+
+```bash
+git clone git@github.com:YOUR_ORG/ai-workflow-skills.git
+cd ai-workflow-skills
+
+export GITHUB_REPOSITORY="YOUR_ORG/ai-workflow-skills"
+export GITHUB_TOKEN="ghp_…"    # required for private API + release assets
+
+./install.sh -t "$GITHUB_TOKEN"
 ```
 
 | Flag | Meaning |
 |------|---------|
 | `-v TAG` | Install a specific release (e.g. `v0.3.0`). Default: latest GitHub release. |
 | `-p DIR` | Install prefix; binaries go to `DIR/bin`. Default: `~/.local`. |
-| `-t TOKEN` | Same as `GITHUB_TOKEN` / `GH_TOKEN` for the GitHub API or private clones. |
-| `-c URL` | If set, appends `export AI_WORKFLOW_SKILLS_CATALOG="URL"` to your shell rc (and may add `PREFIX/bin` to `PATH`). |
+| `-t TOKEN` | Same as `GITHUB_TOKEN` / `GH_TOKEN` (required for private repos on Linux release download). |
+| `-c URL` | Writes `export AI_WORKFLOW_SKILLS_CATALOG="URL"` to your shell rc (optional). |
 
-**Custom install directory:**
+Point the catalog at this repo’s bundled skills (local path, no Git token needed):
 
 ```bash
-PREFIX="${HOME}/.local"
-curl -fsSL "https://raw.githubusercontent.com/watasabi/ai-workflow-skills/main/install.sh" | bash -s -- -p "${PREFIX}"
+./install.sh -t "$GITHUB_TOKEN" \
+  -c "$(pwd)/catalog"
 ```
 
-Ensure `${PREFIX}/bin` is on your `PATH` (the script can add it when `-c` is used).
+On **Linux ARM64** (and other arches without a release tarball), use [Option A](#option-a-clone--cargo-recommended) instead.
 
-### Option B: Cargo (from this repository)
-
-Use this on **Linux ARM64** and other platforms where the install script is not applicable, or whenever you prefer Rust to manage the binary.
+### Option C: Build from source (no install)
 
 ```bash
-cargo install --path .              # from a clone
-# or
-cargo install --git https://github.com/watasabi/ai-workflow-skills.git --locked
-```
-
-The binary is `ai-workflow-skills` (e.g. under `~/.cargo/bin` if that directory is on your `PATH`).
-
-### Option C: Build from source
-
-```bash
-git clone https://github.com/watasabi/ai-workflow-skills.git
+git clone git@github.com:YOUR_ORG/ai-workflow-skills.git
 cd ai-workflow-skills
 cargo build --release --locked
-# binary: target/release/ai-workflow-skills
+# ./target/release/ai-workflow-skills
 ```
+
+### Public fork only: pipe install script
+
+If you maintain a **public** fork, you may still use:
+
+```bash
+export GITHUB_REPOSITORY="YOUR_ORG/ai-workflow-skills"
+curl -fsSL "https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/main/install.sh" | bash -s --
+```
+
+For the private upstream, always use Options A–C.
 
 ---
 
@@ -70,7 +125,28 @@ Every command that reads skills needs to know **where the catalog is**: a **loca
 
 You can also pass **`--catalog`** one or more times on the CLI; that overrides the env-based resolution for that invocation.
 
-For **private HTTPS** Git remotes, set `AI_WORKFLOW_SKILLS_GIT_TOKEN`; the CLI injects `https://oauth2:<token>@…` into the remote URL. For `git@…` remotes, use SSH keys.
+### This repository’s catalog (local, private-friendly)
+
+Skills ship under [`catalog/`](catalog/) (tooling + project specs from `.specs`). No Git token required if you use a filesystem path:
+
+```bash
+export AI_WORKFLOW_SKILLS_CATALOG="/path/to/ai-workflow-skills/catalog"
+```
+
+Add that line to `~/.zshrc` or `~/.bashrc` after clone.
+
+### Remote catalogs (including private Git)
+
+For a **private** skills repo over HTTPS, set `AI_WORKFLOW_SKILLS_GIT_TOKEN`; the CLI injects `https://oauth2:<token>@…` into the remote URL.
+
+```bash
+export AI_WORKFLOW_SKILLS_CATALOG="https://github.com/YOUR_ORG/your-skill-catalog.git"
+export AI_WORKFLOW_SKILLS_GIT_TOKEN="ghp_…"
+```
+
+For `git@github.com:ORG/repo.git` catalog URLs, use SSH keys (no token env var).
+
+**Note:** Cloning [tech-leads-club/agent-skills](https://github.com/tech-leads-club/agent-skills) requires the catalog root `packages/skills-catalog` inside the clone (not the repo root). This repo’s layout is already `catalog/skills/…`.
 
 ---
 
@@ -88,7 +164,7 @@ ai-workflow-skills --help
 When **stdin and stdout are a TTY** and you run **no subcommand**, the tool opens the interactive manager:
 
 ```bash
-export AI_WORKFLOW_SKILLS_CATALOG="https://github.com/your-org/your-skill-catalog.git"
+export AI_WORKFLOW_SKILLS_CATALOG="/path/to/ai-workflow-skills/catalog"
 ai-workflow-skills
 ```
 
@@ -129,22 +205,32 @@ If the same skill name appears in more than one catalog, specify **`catalog-labe
 
 ### Example session
 
-1. Point at a catalog (or use `--catalog` on each command).
+From a clone of this private repo:
+
+1. Point at the local catalog (or pass `--catalog` on each command).
 
 ```bash
-export AI_WORKFLOW_SKILLS_CATALOG="https://github.com/your-org/your-skill-catalog.git"
+cd ai-workflow-skills
+export AI_WORKFLOW_SKILLS_CATALOG="$(pwd)/catalog"
 ```
 
 2. List available skills.
 
 ```bash
 ai-workflow-skills list
+# e.g. tool-github-cli, tool-databricks, proj-specs-testing, …
 ```
 
-3. Install a skill into the current project (from the project root).
+3. Install skills into the current project (from the repo root).
 
 ```bash
-ai-workflow-skills install --skill "my-skill-name"
+ai-workflow-skills install -s tool-github-cli -s tool-databricks -a cursor
+# project specs (split by topic):
+ai-workflow-skills install \
+  -s proj-specs-architecture -s proj-specs-conventions \
+  -s proj-specs-testing -s proj-specs-debug \
+  -s proj-specs-changes -s proj-specs-audits \
+  -a cursor
 ```
 
 4. List what is installed according to the lockfile.
