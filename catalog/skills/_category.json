@@ -1,0 +1,10 @@
+{
+  "(tooling)": {
+    "name": "Tooling",
+    "description": "Skills for CLI tooling and utilities"
+  },
+  "(development)": {
+    "name": "Development",
+    "description": "Skills for software development workflows in this repository"
+  }
+}

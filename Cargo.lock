@@ -12,6 +12,32 @@ dependencies = [
 ]
 
 [[package]]
+name = "ai-workflow-skills"
+version = "0.3.0"
+dependencies = [
+ "anyhow",
+ "assert_cmd",
+ "chrono",
+ "clap",
+ "crossterm",
+ "dirs",
+ "dunce",
+ "libc",
+ "once_cell",
+ "pathdiff",
+ "predicates",
+ "ratatui",
+ "regex",
+ "semver",
+ "serde",
+ "serde_json",
+ "serde_yaml",
+ "sha2",
+ "tempfile",
+ "walkdir",
+]
+
+[[package]]
 name = "allocator-api2"
 version = "0.2.21"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -505,32 +531,6 @@ name = "ident_case"
 version = "1.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b9e0384b61958566e926dc50660321d12159025e767c18e043daf26b70104c39"
-
-[[package]]
-name = "ai-workflow-skills"
-version = "0.3.0"
-dependencies = [
- "anyhow",
- "assert_cmd",
- "chrono",
- "clap",
- "crossterm",
- "dirs",
- "dunce",
- "libc",
- "once_cell",
- "pathdiff",
- "predicates",
- "ratatui",
- "regex",
- "semver",
- "serde",
- "serde_json",
- "serde_yaml",
- "sha2",
- "tempfile",
- "walkdir",
-]
 
 [[package]]
 name = "indexmap"
