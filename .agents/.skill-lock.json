@@ -1,14 +1,29 @@
 {
   "version": 3,
   "skills": {
-    "tool-github-cli": {
-      "name": "tool-github-cli",
+    "tool-databricks": {
+      "name": "tool-databricks",
       "source": "local",
-      "content_hash": "b36231762adbde50b7d917887445a1d5b93c5beb124ebe04e1a1d3d2f5268fe4",
-      "installed_at": "2026-05-26T19:36:56.524686982+00:00",
-      "updated_at": "2026-05-26T19:36:56.524686982+00:00",
+      "content_hash": "9bf3a4aeb34414b3e2622cd6ac667dc71dcc651c1fbc8110eb9d84607da5465d",
+      "installed_at": "2026-05-26T19:36:56.522732082+00:00",
+      "updated_at": "2026-09-11T22:52:52.839349348+00:00",
       "agents": [
-        "cursor"
+        "cursor",
+        "claude-code"
+      ],
+      "method": "copy",
+      "global": false,
+      "version": "1.0.0",
+      "catalog_label": "catalog"
+    },
+    "ds-template-workflow": {
+      "name": "ds-template-workflow",
+      "source": "local",
+      "content_hash": "a812f8f34db078cff52c934e9569af335feecf1a80a62b9fbae13411c229d38e",
+      "installed_at": "2026-09-11T22:52:52.805517920+00:00",
+      "updated_at": "2026-09-11T22:52:52.805517920+00:00",
+      "agents": [
+        "claude-code"
       ],
       "method": "copy",
       "global": false,
@@ -20,9 +35,39 @@
       "source": "local",
       "content_hash": "c8e9d6398bbd5681c0603b4dce937ad6f8101dbbb0b224cf06bd2096ca99b781",
       "installed_at": "2026-05-26T19:44:59.746510979+00:00",
-      "updated_at": "2026-05-26T19:45:46.406818955+00:00",
+      "updated_at": "2026-09-11T22:52:52.818480834+00:00",
       "agents": [
-        "cursor"
+        "cursor",
+        "claude-code"
+      ],
+      "method": "copy",
+      "global": false,
+      "version": "1.0.0",
+      "catalog_label": "catalog"
+    },
+    "nursing-health-reports": {
+      "name": "nursing-health-reports",
+      "source": "local",
+      "content_hash": "93a4ff3df813a924abd75acb44abf2416d0a2e5fa4fba1e60719820f105e1074",
+      "installed_at": "2026-09-11T22:52:52.810513120+00:00",
+      "updated_at": "2026-09-11T22:52:52.810513120+00:00",
+      "agents": [
+        "claude-code"
+      ],
+      "method": "copy",
+      "global": false,
+      "version": "1.0.0",
+      "catalog_label": "catalog"
+    },
+    "tool-github-cli": {
+      "name": "tool-github-cli",
+      "source": "local",
+      "content_hash": "b36231762adbde50b7d917887445a1d5b93c5beb124ebe04e1a1d3d2f5268fe4",
+      "installed_at": "2026-05-26T19:36:56.524686982+00:00",
+      "updated_at": "2026-09-11T22:52:52.842566860+00:00",
+      "agents": [
+        "cursor",
+        "claude-code"
       ],
       "method": "copy",
       "global": false,
@@ -34,51 +79,10 @@
       "source": "local",
       "content_hash": "c3d2d55593bb08b0c4b78e6357fd641923703cd8555d31ddb90352815a620f8a",
       "installed_at": "2026-05-26T19:44:59.743724685+00:00",
-      "updated_at": "2026-05-26T19:45:46.403001642+00:00",
+      "updated_at": "2026-09-11T22:52:52.831239337+00:00",
       "agents": [
-        "cursor"
-      ],
-      "method": "copy",
-      "global": false,
-      "version": "1.0.0",
-      "catalog_label": "catalog"
-    },
-    "proj-specs-conventions": {
-      "name": "proj-specs-conventions",
-      "source": "local",
-      "content_hash": "8dc6a1dc971de1c03ddc0d79b71f6ee6859ff1d58cfe4542261362341d0b6e82",
-      "installed_at": "2026-05-26T19:44:59.741751513+00:00",
-      "updated_at": "2026-05-26T19:45:46.400226600+00:00",
-      "agents": [
-        "cursor"
-      ],
-      "method": "copy",
-      "global": false,
-      "version": "1.0.0",
-      "catalog_label": "catalog"
-    },
-    "proj-specs-architecture": {
-      "name": "proj-specs-architecture",
-      "source": "local",
-      "content_hash": "9227e4f49ba11e6a58ea67a06bcffd82aae12c8e1da3bbf2a282dfc42148135e",
-      "installed_at": "2026-05-26T19:44:59.740662946+00:00",
-      "updated_at": "2026-05-26T19:45:46.398658165+00:00",
-      "agents": [
-        "cursor"
-      ],
-      "method": "copy",
-      "global": false,
-      "version": "1.0.0",
-      "catalog_label": "catalog"
-    },
-    "tool-databricks": {
-      "name": "tool-databricks",
-      "source": "local",
-      "content_hash": "9bf3a4aeb34414b3e2622cd6ac667dc71dcc651c1fbc8110eb9d84607da5465d",
-      "installed_at": "2026-05-26T19:36:56.522732082+00:00",
-      "updated_at": "2026-05-26T19:36:56.522732082+00:00",
-      "agents": [
-        "cursor"
+        "cursor",
+        "claude-code"
       ],
       "method": "copy",
       "global": false,
@@ -90,9 +94,40 @@
       "source": "local",
       "content_hash": "0399b8cde40173b167e33aff311fa930c659bedcc0cfd238fdb02dfe8da93fe0",
       "installed_at": "2026-05-26T19:44:59.745381195+00:00",
-      "updated_at": "2026-05-26T19:45:46.405455213+00:00",
+      "updated_at": "2026-09-11T22:52:52.823403870+00:00",
       "agents": [
-        "cursor"
+        "cursor",
+        "claude-code"
+      ],
+      "method": "copy",
+      "global": false,
+      "version": "1.0.0",
+      "catalog_label": "catalog"
+    },
+    "proj-specs-architecture": {
+      "name": "proj-specs-architecture",
+      "source": "local",
+      "content_hash": "9227e4f49ba11e6a58ea67a06bcffd82aae12c8e1da3bbf2a282dfc42148135e",
+      "installed_at": "2026-05-26T19:44:59.740662946+00:00",
+      "updated_at": "2026-09-11T22:52:52.814714765+00:00",
+      "agents": [
+        "cursor",
+        "claude-code"
+      ],
+      "method": "copy",
+      "global": false,
+      "version": "1.0.0",
+      "catalog_label": "catalog"
+    },
+    "proj-specs-conventions": {
+      "name": "proj-specs-conventions",
+      "source": "local",
+      "content_hash": "8dc6a1dc971de1c03ddc0d79b71f6ee6859ff1d58cfe4542261362341d0b6e82",
+      "installed_at": "2026-05-26T19:44:59.741751513+00:00",
+      "updated_at": "2026-09-11T22:52:52.827347382+00:00",
+      "agents": [
+        "cursor",
+        "claude-code"
       ],
       "method": "copy",
       "global": false,
@@ -104,9 +139,10 @@
       "source": "local",
       "content_hash": "27f6d9f1ac674dd1ced859b733569e505abd5dd9c7ddcd320907dfc0193f5381",
       "installed_at": "2026-05-26T19:44:59.742779566+00:00",
-      "updated_at": "2026-05-26T19:45:46.401672906+00:00",
+      "updated_at": "2026-09-11T22:52:52.835103470+00:00",
       "agents": [
-        "cursor"
+        "cursor",
+        "claude-code"
       ],
       "method": "copy",
       "global": false,
