@@ -6,5 +6,9 @@
   "(development)": {
     "name": "Development",
     "description": "Skills for software development workflows in this repository"
+  },
+  "(research)": {
+    "name": "Research",
+    "description": "Skills for data science workflows, health research, nursing analytics, and clinical reporting"
   }
 }
