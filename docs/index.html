@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ai-workflow-skills</title>
+<meta name="description" content="A versioned catalog of reusable AI agent skills, and a fast Rust CLI to install them into any project.">
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #ffffff;
+    --bg-alt: #f6f7f9;
+    --fg: #16181d;
+    --fg-muted: #565c66;
+    --border: #e3e5e9;
+    --accent: #6d5bd0;
+    --accent-fg: #ffffff;
+    --code-bg: #0f1117;
+    --code-fg: #e6e8ef;
+    --pill-bg: #eef0ff;
+    --pill-fg: #4a3fb0;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0d0e12;
+      --bg-alt: #14161c;
+      --fg: #eceef2;
+      --fg-muted: #9aa0ac;
+      --border: #262932;
+      --accent: #9c8cff;
+      --accent-fg: #14161c;
+      --code-bg: #08090c;
+      --code-fg: #dfe2ea;
+      --pill-bg: #201c3d;
+      --pill-fg: #c1b6ff;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.55;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .wrap { max-width: 920px; margin: 0 auto; padding: 0 24px; }
+
+  header.hero {
+    padding: 88px 0 56px;
+    border-bottom: 1px solid var(--border);
+  }
+  .kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--pill-fg);
+    background: var(--pill-bg);
+    padding: 6px 12px;
+    border-radius: 999px;
+    margin-bottom: 20px;
+  }
+  h1 {
+    font-size: clamp(2.1rem, 5vw, 3.2rem);
+    line-height: 1.1;
+    margin: 0 0 18px;
+    letter-spacing: -0.02em;
+  }
+  .lede {
+    font-size: 1.15rem;
+    color: var(--fg-muted);
+    max-width: 640px;
+    margin: 0 0 32px;
+  }
+  .cta-row { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 28px; }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 20px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border: 1px solid var(--border);
+  }
+  .btn.primary {
+    background: var(--accent);
+    color: var(--accent-fg);
+    border-color: transparent;
+  }
+  .btn.primary:hover { text-decoration: none; filter: brightness(1.05); }
+  .btn.ghost { color: var(--fg); }
+  .btn.ghost:hover { text-decoration: none; background: var(--bg-alt); }
+
+  .install-line {
+    background: var(--code-bg);
+    color: var(--code-fg);
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 0.88rem;
+    overflow-x: auto;
+    max-width: 640px;
+  }
+
+  section { padding: 56px 0; border-bottom: 1px solid var(--border); }
+  section:last-of-type { border-bottom: none; }
+  h2 {
+    font-size: 1.5rem;
+    margin: 0 0 8px;
+    letter-spacing: -0.01em;
+  }
+  .section-sub { color: var(--fg-muted); margin: 0 0 28px; max-width: 620px; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 18px;
+  }
+  .card {
+    border: 1px solid var(--border);
+    background: var(--bg-alt);
+    border-radius: 14px;
+    padding: 20px;
+  }
+  .card .emoji { font-size: 1.4rem; display: block; margin-bottom: 10px; }
+  .card h3 { margin: 0 0 6px; font-size: 1.02rem; }
+  .card p { margin: 0; color: var(--fg-muted); font-size: 0.92rem; }
+
+  pre {
+    background: var(--code-bg);
+    color: var(--code-fg);
+    border-radius: 12px;
+    padding: 20px;
+    overflow-x: auto;
+    font-size: 0.85rem;
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  }
+
+  table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--border); }
+  th { color: var(--fg-muted); font-weight: 600; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.03em; }
+  td code, th code { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace; font-size: 0.85em; }
+  .table-wrap { overflow-x: auto; }
+
+  .badges { display: flex; flex-wrap: wrap; gap: 8px; }
+  .badge {
+    font-size: 0.78rem;
+    padding: 5px 10px;
+    border-radius: 999px;
+    background: var(--pill-bg);
+    color: var(--pill-fg);
+    font-weight: 600;
+  }
+
+  footer {
+    padding: 40px 0 64px;
+    color: var(--fg-muted);
+    font-size: 0.88rem;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  @media (max-width: 480px) {
+    header.hero { padding: 56px 0 40px; }
+    section { padding: 40px 0; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="kicker">⚡ Open source · Rust CLI</span>
+    <h1>Give every coding agent the same playbook.</h1>
+    <p class="lede">
+      ai-workflow-skills is a versioned catalog of reusable AI agent skills,
+      plus a fast CLI to install them into any project — Cursor, Claude Code,
+      GitHub Copilot, Windsurf, and 15+ more.
+    </p>
+    <div class="cta-row">
+      <a class="btn primary" href="https://github.com/watasabi/ai-workflow-skills">View on GitHub</a>
+      <a class="btn ghost" href="https://github.com/watasabi/ai-workflow-skills#quickstart">Quickstart</a>
+      <a class="btn ghost" href="https://github.com/watasabi/ai-workflow-skills#catalog">Browse the catalog</a>
+    </div>
+    <div class="install-line">curl -fsSL https://raw.githubusercontent.com/watasabi/ai-workflow-skills/main/install.sh | bash</div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <h2>Why skills need a package manager</h2>
+    <p class="section-sub">
+      A "skill" — a folder with a <code>SKILL.md</code> describing when and how an
+      agent should act — is a great way to give coding agents durable, reviewable
+      knowledge. Once you have more than a couple, you need to version, share,
+      and install them consistently. That's what this tool does.
+    </p>
+    <div class="grid">
+      <div class="card">
+        <span class="emoji">📦</span>
+        <h3>Versioned catalog</h3>
+        <p>Skills live as plain folders in a local directory or Git repo — easy to diff, review, and fork.</p>
+      </div>
+      <div class="card">
+        <span class="emoji">🔌</span>
+        <h3>Multi-agent</h3>
+        <p>Installs into the right folder for 19+ agents, with auto-detection from your project's config folders.</p>
+      </div>
+      <div class="card">
+        <span class="emoji">🔒</span>
+        <h3>Tracked installs</h3>
+        <p>Every install is recorded with content hashes in a project-local lockfile, so updates only touch what changed.</p>
+      </div>
+      <div class="card">
+        <span class="emoji">🖥️</span>
+        <h3>Interactive TUI</h3>
+        <p>Browse, install, update, and remove skills without memorizing flags.</p>
+      </div>
+      <div class="card">
+        <span class="emoji">🧾</span>
+        <h3>Auditable</h3>
+        <p>Every install, update, and removal is appended to a local audit log.</p>
+      </div>
+      <div class="card">
+        <span class="emoji">🧩</span>
+        <h3>Bring your own</h3>
+        <p>Compatible with the agent-skills convention — any existing <code>SKILL.md</code> folder works as-is.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Quickstart</h2>
+    <p class="section-sub">Install the CLI, point it at a catalog, and install a skill into your project.</p>
+    <pre>git clone https://github.com/watasabi/ai-workflow-skills.git
+cd ai-workflow-skills
+cargo install --path . --locked
+
+export AI_WORKFLOW_SKILLS_CATALOG="$(pwd)/catalog"
+
+ai-workflow-skills list
+ai-workflow-skills install -s tool-github-cli -a cursor -a claude-code</pre>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>What's in the catalog</h2>
+    <p class="section-sub">A starting set of skills shipped with this repo — extend it with your own.</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Skill</th><th>Category</th><th>Use for</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>tool-github-cli</code></td><td>Tooling</td><td>PRs, issues, checks, GitHub API via <code>gh</code></td></tr>
+          <tr><td><code>tool-databricks</code></td><td>Tooling</td><td>Databricks CLI auth, jobs, bundles, data exploration</td></tr>
+          <tr><td><code>ds-template-workflow</code></td><td>Research</td><td>Navigating <code>ds-template-v2</code> data science projects</td></tr>
+          <tr><td><code>nursing-health-reports</code></td><td>Research</td><td>Clinical cohort analytics with plain-language reports</td></tr>
+          <tr><td><code>proj-specs-*</code></td><td>Development</td><td>Architecture, conventions, testing, debug, change specs</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Works with your agent</h2>
+    <p class="section-sub">Each agent maps to its own skills folder and is auto-detected when installed without <code>-a</code>.</p>
+    <div class="badges">
+      <span class="badge">Cursor</span>
+      <span class="badge">Claude Code</span>
+      <span class="badge">GitHub Copilot</span>
+      <span class="badge">Windsurf</span>
+      <span class="badge">Cline</span>
+      <span class="badge">Aider</span>
+      <span class="badge">OpenAI Codex</span>
+      <span class="badge">Gemini CLI</span>
+      <span class="badge">Antigravity</span>
+      <span class="badge">Roo Code</span>
+      <span class="badge">Kilo Code</span>
+      <span class="badge">TRAE</span>
+      <span class="badge">Kiro</span>
+      <span class="badge">Amazon Q</span>
+      <span class="badge">Augment</span>
+      <span class="badge">Tabnine</span>
+      <span class="badge">OpenCode</span>
+      <span class="badge">Sourcegraph Cody</span>
+      <span class="badge">Droid (Factory.ai)</span>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap" style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; width:100%;">
+    <span>MIT OR Apache-2.0 &nbsp;·&nbsp; <a href="https://github.com/watasabi/ai-workflow-skills">github.com/watasabi/ai-workflow-skills</a></span>
+    <span><a href="https://github.com/watasabi/ai-workflow-skills/issues">Issues</a> &nbsp;·&nbsp; <a href="https://github.com/watasabi/ai-workflow-skills#contributing">Contributing</a></span>
+  </div>
+</footer>
+
+</body>
+</html>

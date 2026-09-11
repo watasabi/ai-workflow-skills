@@ -1,12 +1,10 @@
 #!/usr/bin/env bash
-# Install ai-workflow-skills from GitHub Releases (Linux x86_64 tarball) or build on macOS.
+# Install ai-workflow-skills from GitHub Releases (prebuilt tarball for Linux/macOS, x86_64/arm64).
 # Set GITHUB_REPOSITORY=owner/repo for your fork (default placeholder below).
 set -euo pipefail
 
 PKG_NAME="ai-workflow-skills"
-PLATFORM="linux-x86_64"
 GITHUB_REPOSITORY="${GITHUB_REPOSITORY:-watasabi/ai-workflow-skills}"
-REPO_GIT="${REPO_GIT:-https://github.com/${GITHUB_REPOSITORY}.git}"
 CATALOG_GIT="${CATALOG_GIT:-}"
 
 VERSION="latest"
@@ -24,8 +22,9 @@ Usage:
   -c URL     Git URL for AI_WORKFLOW_SKILLS_CATALOG (written to shell rc if set).
   -h         This help.
 
-  Linux x86_64: download release tarball from GitHub.
-  macOS: clone tagged repo and run cargo build --release (Rust required).
+  Downloads a prebuilt release tarball for your platform:
+  Linux x86_64/arm64, macOS x86_64/arm64 (Apple Silicon).
+  For anything else, use 'cargo install --git ...' (see README).
 
   Set GITHUB_REPOSITORY=owner/repo to point at your GitHub fork before piping the script.
 EOF
@@ -95,41 +94,15 @@ download_binary() {
   fi
   tar -xzf "${tmp}/dist.tar.gz" -C "${tmp}"
   mkdir -p "${BIN_DIR}"
-  local artifact="${tmp}/${PKG_NAME}"
-  [[ -f "${artifact}" ]] || artifact="${tmp}/ai-workflow-skills"
-  [[ -f "${artifact}" ]] || {
-    echo -e "${RED}Binary not found in tarball (expected ${PKG_NAME} or ai-workflow-skills).${NC}" >&2
+  local artifact
+  artifact="$(find "${tmp}" -type f -name "${PKG_NAME}" -print -quit)"
+  [[ -n "${artifact}" ]] && [[ -f "${artifact}" ]] || {
+    echo -e "${RED}Binary not found in tarball (expected a file named ${PKG_NAME}).${NC}" >&2
     rm -rf "${tmp}"
     exit 1
   }
   install -m 0755 "${artifact}" "${BIN_DIR}/${PKG_NAME}"
   rm -rf "${tmp}"
-  echo -e "${GREEN}Installed ${BIN_DIR}/${PKG_NAME}${NC}"
-}
-
-build_and_install_darwin() {
-  local ver="$1"
-  local work clone_url
-  work="$(mktemp -d)"
-  clone_url="${REPO_GIT}"
-  if [[ -n "${TOKEN}" ]] && [[ "${clone_url}" =~ ^https://github.com/ ]]; then
-    clone_url="https://${TOKEN}@github.com/${clone_url#https://github.com/}"
-  fi
-  echo -e "${BLUE}Cloning ${PKG_NAME} (${ver}) for macOS build…${NC}"
-  if ! git clone --depth 1 --branch "${ver}" "${clone_url}" "${work}"; then
-    echo -e "${RED}Clone failed (missing tag or private repo: set -t or GITHUB_TOKEN).${NC}" >&2
-    rm -rf "${work}"
-    exit 1
-  fi
-  echo -e "${BLUE}Running cargo build --release --locked…${NC}"
-  if ! (cd "${work}" && cargo build --release --locked); then
-    echo -e "${RED}cargo build failed. Install Rust: https://rustup.rs/${NC}" >&2
-    rm -rf "${work}"
-    exit 1
-  fi
-  mkdir -p "${BIN_DIR}"
-  install -m 0755 "${work}/target/release/${PKG_NAME}" "${BIN_DIR}/${PKG_NAME}"
-  rm -rf "${work}"
   echo -e "${GREEN}Installed ${BIN_DIR}/${PKG_NAME}${NC}"
 }
 
@@ -170,16 +143,18 @@ ensure_env_snippet() {
 
 OS="$(uname -s)"
 ARCH="$(uname -m)"
-INSTALL_KIND=""
+PLATFORM=""
 
-if [[ "${OS}" == "Linux" ]] && [[ "${ARCH}" == "x86_64" ]]; then
-  INSTALL_KIND="linux_binary"
-elif [[ "${OS}" == "Darwin" ]]; then
-  INSTALL_KIND="darwin_build"
-else
-  echo -e "${RED}Supported: Linux x86_64 (release tarball) or macOS (local build). System: ${OS} ${ARCH}${NC}" >&2
-  exit 1
-fi
+case "${OS}-${ARCH}" in
+  Linux-x86_64) PLATFORM="linux-x86_64" ;;
+  Linux-aarch64|Linux-arm64) PLATFORM="linux-arm64" ;;
+  Darwin-x86_64) PLATFORM="macos-x86_64" ;;
+  Darwin-arm64) PLATFORM="macos-arm64" ;;
+  *)
+    echo -e "${RED}No prebuilt tarball for ${OS} ${ARCH}. Use 'cargo install --git ...' instead (see README).${NC}" >&2
+    exit 1
+    ;;
+esac
 
 command -v curl >/dev/null || {
   echo -e "${RED}curl is required.${NC}" >&2
@@ -189,24 +164,11 @@ command -v python3 >/dev/null || {
   echo -e "${RED}python3 is required to resolve latest release.${NC}" >&2
   exit 1
 }
-if [[ "${INSTALL_KIND}" == "darwin_build" ]]; then
-  command -v git >/dev/null || {
-    echo -e "${RED}git is required on macOS.${NC}" >&2
-    exit 1
-  }
-  command -v cargo >/dev/null || {
-    echo -e "${RED}cargo is required on macOS. Install Rust: https://rustup.rs/${NC}" >&2
-    exit 1
-  }
-fi
 
 VER_RESOLVED="$(resolve_version)"
 echo -e "${BLUE}Version: ${VER_RESOLVED}${NC}"
 
-case "${INSTALL_KIND}" in
-  linux_binary) download_binary "${VER_RESOLVED}" ;;
-  darwin_build) build_and_install_darwin "${VER_RESOLVED}" ;;
-esac
+download_binary "${VER_RESOLVED}"
 
 ensure_env_snippet
 
