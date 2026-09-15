@@ -112,6 +112,22 @@ uv run ruff format src/ tests/
 uv run pytest tests/
 ```
 
+## Changelog
+
+Every generated project ships a root `CHANGELOG.md` ([Keep a Changelog](https://keepachangelog.com/) format, Semantic Versioning). **Every user-facing change — new pipeline step, new notebook deliverable, new model, a fix, a breaking change to `src/`/`pipe/` — must add an entry under `## [Unreleased]`** in the same change, not as an afterthought:
+
+```markdown
+## [Unreleased]
+
+### Added
+- Nova query de extração para o dataset X em `queries/get_data/`.
+
+### Fixed
+- Corrige leitura de datas em `pipe/src/02_preprocess.py`.
+```
+
+Use the standard categories: `Added`, `Changed`, `Fixed`, `Removed`, `Deprecated`, `Security`. On release, move `[Unreleased]` entries under a new `## [x.y.z] - YYYY-MM-DD` heading. If a project's `CHANGELOG.md` is missing, create it with this header before adding entries — do not skip it because the file doesn't exist yet.
+
 ## Commit convention
 
 Conventional Commits are **required**. Allowed types: `feat, fix, docs, style, refactor, perf, test, chore, infra, imp, breaking`.
@@ -131,6 +147,7 @@ refactor(src): simplifica feature engineering
 - Notebooks with logic that's reused elsewhere and never promoted to `src/`
 - Pipeline steps in `pipe/src/` that aren't numbered / aren't idempotent
 - Committing `config/.env` (only `.env.example` is tracked)
+- Shipping a change without a `CHANGELOG.md` entry under `[Unreleased]`
 - Adding a UV sub-project when the workspace's shared deps would do
 - Extracting abstractions in exploratory code before a second real use case exists
 - Line length or lint rules diverging from the `pyproject.toml` shown above without updating it

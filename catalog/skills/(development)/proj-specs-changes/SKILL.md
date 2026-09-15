@@ -26,7 +26,24 @@ Bundled mirror: [references/changes/](references/changes/)
 1. Read `references/changes/DIGEST.md` for context on recent work.
 2. Open the specific `<change-id>/CHANGE.md` for scope and status.
 3. Follow `plan.md` if present; update `verification.md` when closing.
-4. Run CI parity before marking done (see **proj-specs-testing**).
+4. **Add an entry to `CHANGELOG.md`** under `## [Unreleased]` describing the change (see below) — do this in the same change, not as a follow-up.
+5. Run CI parity before marking done (see **proj-specs-testing**).
+
+## CHANGELOG.md
+
+Root `CHANGELOG.md` ([Keep a Changelog](https://keepachangelog.com/) format, Semantic Versioning) is the **user-facing** record of what changed, separate from `.specs/changes/` (which is the internal planning ledger). Every change that a consumer of this CLI/catalog would care about — a new CLI flag, a new/changed skill, a bug fix, a breaking change — needs an entry under `## [Unreleased]`:
+
+```markdown
+## [Unreleased]
+
+### Added
+- `install --symlink` flag for linking instead of copying skills.
+
+### Fixed
+- Lockfile race when two installs run concurrently.
+```
+
+Categories: `Added`, `Changed`, `Fixed`, `Removed`, `Deprecated`, `Security`. On a version bump (`Cargo.toml` + release tag), move `[Unreleased]` entries under a new `## [x.y.z] - YYYY-MM-DD` heading. A `CHANGE.md` without a matching `CHANGELOG.md` entry is incomplete — the ledger explains *how*, the changelog tells users *what*.
 
 ## Active change folders (examples)
 
