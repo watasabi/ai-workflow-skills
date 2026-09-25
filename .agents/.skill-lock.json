@@ -1,51 +1,6 @@
 {
   "version": 3,
   "skills": {
-    "proj-specs-changes": {
-      "name": "proj-specs-changes",
-      "source": "local",
-      "content_hash": "ae3ac6c6fecee7374e0286db185556ffed2f8d20b74c269880ad37b3d3d6cfd8",
-      "installed_at": "2026-05-26T19:44:59.745381195+00:00",
-      "updated_at": "2026-09-15T01:16:12.796776830+00:00",
-      "agents": [
-        "cursor",
-        "claude-code"
-      ],
-      "method": "copy",
-      "global": false,
-      "version": "1.0.0",
-      "catalog_label": "catalog"
-    },
-    "tool-databricks": {
-      "name": "tool-databricks",
-      "source": "local",
-      "content_hash": "9bf3a4aeb34414b3e2622cd6ac667dc71dcc651c1fbc8110eb9d84607da5465d",
-      "installed_at": "2026-05-26T19:36:56.522732082+00:00",
-      "updated_at": "2026-09-11T22:52:52.839349348+00:00",
-      "agents": [
-        "cursor",
-        "claude-code"
-      ],
-      "method": "copy",
-      "global": false,
-      "version": "1.0.0",
-      "catalog_label": "catalog"
-    },
-    "proj-specs-architecture": {
-      "name": "proj-specs-architecture",
-      "source": "local",
-      "content_hash": "9227e4f49ba11e6a58ea67a06bcffd82aae12c8e1da3bbf2a282dfc42148135e",
-      "installed_at": "2026-05-26T19:44:59.740662946+00:00",
-      "updated_at": "2026-09-11T22:52:52.814714765+00:00",
-      "agents": [
-        "cursor",
-        "claude-code"
-      ],
-      "method": "copy",
-      "global": false,
-      "version": "1.0.0",
-      "catalog_label": "catalog"
-    },
     "proj-specs-testing": {
       "name": "proj-specs-testing",
       "source": "local",
@@ -76,15 +31,90 @@
       "version": "1.0.0",
       "catalog_label": "catalog"
     },
+    "tool-github-cli": {
+      "name": "tool-github-cli",
+      "source": "local",
+      "content_hash": "b36231762adbde50b7d917887445a1d5b93c5beb124ebe04e1a1d3d2f5268fe4",
+      "installed_at": "2026-05-26T19:36:56.524686982+00:00",
+      "updated_at": "2026-09-11T22:52:52.842566860+00:00",
+      "agents": [
+        "cursor",
+        "claude-code"
+      ],
+      "method": "copy",
+      "global": false,
+      "version": "1.0.0",
+      "catalog_label": "catalog"
+    },
+    "ds-change": {
+      "name": "ds-change",
+      "source": "local",
+      "content_hash": "b1886eb19e7810d89c88c472545593044afe9da003eecca976483ca6107a313d",
+      "installed_at": "2026-09-25T16:29:44.663390734+00:00",
+      "updated_at": "2026-09-25T16:29:44.665211651+00:00",
+      "agents": [
+        "cursor",
+        "claude-code"
+      ],
+      "method": "copy",
+      "global": false,
+      "version": "1.0.0",
+      "catalog_label": "catalog"
+    },
+    "ds-debug": {
+      "name": "ds-debug",
+      "source": "local",
+      "content_hash": "0f4b85c0fd6517468da47a455562ecc1a5c4080243605a7ce371b17cb76139ae",
+      "installed_at": "2026-09-25T16:30:31.012249755+00:00",
+      "updated_at": "2026-09-25T16:30:31.014284521+00:00",
+      "agents": [
+        "cursor",
+        "claude-code"
+      ],
+      "method": "copy",
+      "global": false,
+      "version": "1.0.0",
+      "catalog_label": "catalog"
+    },
+    "proj-specs-architecture": {
+      "name": "proj-specs-architecture",
+      "source": "local",
+      "content_hash": "9227e4f49ba11e6a58ea67a06bcffd82aae12c8e1da3bbf2a282dfc42148135e",
+      "installed_at": "2026-05-26T19:44:59.740662946+00:00",
+      "updated_at": "2026-09-11T22:52:52.814714765+00:00",
+      "agents": [
+        "cursor",
+        "claude-code"
+      ],
+      "method": "copy",
+      "global": false,
+      "version": "1.0.0",
+      "catalog_label": "catalog"
+    },
     "ds-template-workflow": {
       "name": "ds-template-workflow",
       "source": "local",
-      "content_hash": "53235c65a0c3245db134400e9e1e72e5dba4ea88596e67b6a5ad5cef2f3fd2d5",
+      "content_hash": "79a0b4e33bf0e80034aecbc267270d44933b72b2775bff93c74e113099952938",
       "installed_at": "2026-09-11T22:52:52.805517920+00:00",
-      "updated_at": "2026-09-15T01:16:12.800615178+00:00",
+      "updated_at": "2026-09-25T16:30:31.022605617+00:00",
       "agents": [
         "claude-code",
         "cursor"
+      ],
+      "method": "copy",
+      "global": false,
+      "version": "1.0.0",
+      "catalog_label": "catalog"
+    },
+    "proj-specs-changes": {
+      "name": "proj-specs-changes",
+      "source": "local",
+      "content_hash": "ae3ac6c6fecee7374e0286db185556ffed2f8d20b74c269880ad37b3d3d6cfd8",
+      "installed_at": "2026-05-26T19:44:59.745381195+00:00",
+      "updated_at": "2026-09-15T01:16:12.796776830+00:00",
+      "agents": [
+        "cursor",
+        "claude-code"
       ],
       "method": "copy",
       "global": false,
@@ -106,12 +136,12 @@
       "version": "1.0.0",
       "catalog_label": "catalog"
     },
-    "tool-github-cli": {
-      "name": "tool-github-cli",
+    "proj-specs-conventions": {
+      "name": "proj-specs-conventions",
       "source": "local",
-      "content_hash": "b36231762adbde50b7d917887445a1d5b93c5beb124ebe04e1a1d3d2f5268fe4",
-      "installed_at": "2026-05-26T19:36:56.524686982+00:00",
-      "updated_at": "2026-09-11T22:52:52.842566860+00:00",
+      "content_hash": "8dc6a1dc971de1c03ddc0d79b71f6ee6859ff1d58cfe4542261362341d0b6e82",
+      "installed_at": "2026-05-26T19:44:59.741751513+00:00",
+      "updated_at": "2026-09-11T22:52:52.827347382+00:00",
       "agents": [
         "cursor",
         "claude-code"
@@ -121,12 +151,12 @@
       "version": "1.0.0",
       "catalog_label": "catalog"
     },
-    "proj-specs-conventions": {
-      "name": "proj-specs-conventions",
+    "tool-databricks": {
+      "name": "tool-databricks",
       "source": "local",
-      "content_hash": "8dc6a1dc971de1c03ddc0d79b71f6ee6859ff1d58cfe4542261362341d0b6e82",
-      "installed_at": "2026-05-26T19:44:59.741751513+00:00",
-      "updated_at": "2026-09-11T22:52:52.827347382+00:00",
+      "content_hash": "9bf3a4aeb34414b3e2622cd6ac667dc71dcc651c1fbc8110eb9d84607da5465d",
+      "installed_at": "2026-05-26T19:36:56.522732082+00:00",
+      "updated_at": "2026-09-11T22:52:52.839349348+00:00",
       "agents": [
         "cursor",
         "claude-code"

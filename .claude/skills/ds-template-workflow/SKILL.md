@@ -112,6 +112,12 @@ uv run ruff format src/ tests/
 uv run pytest tests/
 ```
 
+## Making changes: use ds-change
+
+For any non-trivial change (new notebook deliverable, query, feature, model, pipeline step), follow the **ds-change** skill: one short note in `docs/changes/YYYY-MM-DD-<slug>.md`, implement in the folders above, verify, then update `CHANGELOG.md`.
+
+When something is broken or a metric looks wrong, use the **ds-debug** skill.
+
 ## Changelog
 
 Every generated project ships a root `CHANGELOG.md` ([Keep a Changelog](https://keepachangelog.com/) format, Semantic Versioning). **Every user-facing change — new pipeline step, new notebook deliverable, new model, a fix, a breaking change to `src/`/`pipe/` — must add an entry under `## [Unreleased]`** in the same change, not as an afterthought:

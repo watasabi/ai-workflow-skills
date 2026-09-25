@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Added
 - `ds-template-workflow` skill: navigate `ds-template-v2` Data Science projects (layout, UV workspaces, Ruff/commit conventions, changelog discipline).
+- `ds-change` skill: lightweight, template-aligned change workflow for data scientists (one note in `docs/changes/`, required `CHANGELOG.md` entry).
+- `ds-debug` skill: symptom-driven debugging checklist for `ds-template-v2` projects (leakage, drift, reproducibility, env, SQL, pipeline).
 - `nursing-health-reports` skill: clinical/nursing cohort analytics patterns.
 - GitHub Actions `release.yml`: builds and publishes tarballs for Linux/macOS (x86_64/arm64) on `vX.Y.Z` tags.
 - `docs/index.html` GitHub Pages landing page.
